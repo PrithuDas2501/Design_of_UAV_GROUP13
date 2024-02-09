@@ -1,9 +1,8 @@
-Empty_Weight = [8, 5, 3.7, 12, 14.9, 1.95, 11.5, 1.5, 6]
-MTOW = [9.5, 10, 4.7, 18, 21.5, 5.9, 14.5, 2.2, 10]
+%% Entering Data and visualizing it (WE NEED TO DO SOMETHING ABOUT THIS!!!!!) 
+Empty_Weight = [8, 5, 3.7, 12, 14.9, 1.95, 11.5, 1.5, 6];
+MTOW = [9.5, 10, 4.7, 18, 21.5, 5.9, 14.5, 2.2, 10];
 
-
-
-p = polyfit(MTOW, Empty_Weight./MTOW, 2)
+p = polyfit(MTOW, Empty_Weight./MTOW, 2);
 x = linspace(0,25,100);
 y = p(1)*x.^2 + p(2)*x + p(3);
 
