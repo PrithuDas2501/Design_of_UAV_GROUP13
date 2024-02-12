@@ -1,27 +1,29 @@
 %% Entering Data and visualizing it (WE NEED TO DO SOMETHING ABOUT THIS!!!!!)
 %Empty_Weight = [8, 5, 3.7, 12, 14.9, 1.95, 11.5, 1.5, 6]; 
 %MTOW = [9.5, 10, 4.7, 18, 21.5, 5.9, 14.5, 2.2, 10];
+clear; close
 MTOW = [10,27,5.5,35,12,9,5,26];
 Empty_Weight = [4.4,14,3.5,20,9,6.2,3.5,8.7];
 
-
-p = polyfit(MTOW, Empty_Weight./MTOW, 2);
-x = linspace(0,50,100);
-y = p(1)*x.^2 + p(2)*x + p(3);
-
+x = linspace(5,50,100);
 figure
 hold on
+grid on
 scatter(MTOW,Empty_Weight./MTOW)
-plot(x,y)
+% plot(x,y)
 
-%% Finding A, L by curve fitting
+%  Finding A, L by curve fitting
 sol = fmincon(@(X) find_AL(X,MTOW,Empty_Weight./MTOW),[1,0])
-find_AL(sol,MTOW,Empty_Weight./MTOW);
+y = sol(1)*x.^sol(2);
+plot(x,y,LineWidth=2)
+title('Empty Weight Fraction Vs Total Weight Trend')
+xlabel('Wt')
+ylabel('We/Wt')
 %% Power Calculation
 %% Energy and Battery Weight Fraction Estimation
 Mass = 10; %(Can be anything, will be cancelled in the final battery weight estimation)
 W = Mass*9.81;
-LbyD = 9;
+LbyD = 10;
 
 Ptakeoff = (W/LbyD)*1.2*12;
 Etakeoff = Ptakeoff*30;
@@ -41,7 +43,7 @@ display(Battery_Weight_Fraction);
 %% Iterative Loop to find initial estimate of weight
 A = sol(1);
 L = sol(2);
-W_p = 2; % Kg (We have to find this)
+W_p = 1.5; % Kg (We have to find this)
 Battery_Weight_Fraction; % (Calculated in Battery Estimation)
 
 figure
