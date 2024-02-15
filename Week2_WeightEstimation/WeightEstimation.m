@@ -25,25 +25,28 @@ Mass = 10; %(Can be anything, will be cancelled in the final battery weight esti
 W = Mass*9.81;
 LbyD = 10;
 
-Ptakeoff = (W/LbyD)*1.2*12;
+Ptakeoff = (W/(LbyD*2))*1.2*12;
 Etakeoff = Ptakeoff*30;
 
-P_climb = (12.5/LbyD)*W;
+P_climb = (12.5/(LbyD*2))*W + W*12.5*sind(11);
 E_Climb = P_climb*120;
 
-P_CruiseLoit = (20/LbyD)*W;
+P_CruiseLoit = (20/(LbyD*2))*W;
 E_CruiseLoit = P_CruiseLoit*2*60*60;
 
-Total_Energy = 2*Etakeoff + 2*E_Climb + E_CruiseLoit;
+P_Turn = 27 * W/((2\sqrt(3))*25);
+E_Turn = P_Turn*90;
 
-Battery_Energy_Density = 260; % W h/ Kg
-Battery_Weight = Total_Energy/(Battery_Energy_Density*60*60);
+Total_Energy = 2*Etakeoff + 2*E_Climb + E_CruiseLoit + E_Turn;
+
+Battery_Energy_Density = 250; % W h/ Kg
+Battery_Weight = Total_Energy*1.1/(0.9*0.8*Battery_Energy_Density*60*60);
 Battery_Weight_Fraction = Battery_Weight/Mass;
 display(Battery_Weight_Fraction);
 %% Iterative Loop to find initial estimate of weight
 A = sol(1);
 L = sol(2);
-W_p = 1.5; % Kg (We have to find this)
+W_p = 2.5; % Kg (We have to find this)
 Battery_Weight_Fraction; % (Calculated in Battery Estimation)
 
 figure
@@ -53,7 +56,7 @@ ylabel('Weight')
 xlabel('Iteration Number')
 title('Convergence of Weight')
 n = 20;
-W = linspace(5,15,n);
+W = linspace(5,35,n);
 for k = 1:n
     w1 = W(k); % Kg (Just an initial guess)
     i = 1;
@@ -74,7 +77,7 @@ for k = 1:n
     % display(w1)
     plot(array(:,1),array(:,2), 'Color','b')
 end
-
+w1
 %%
 function y = find_empty_frac(A,L,W)
 y = A*W.^L;
