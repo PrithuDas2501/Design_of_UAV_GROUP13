@@ -137,6 +137,7 @@ e = 1.78*(1-0.045*Corresponding_AR^0.68)-0.64
 K = 1/(pi*e*Corresponding_AR)
 c = 0.2253;
 V = 20;
+nu = 15.53e-6;
 Re = V*c/nu;
 Cf = 1.328/sqrt(Re);
 Cd0 = Cf*3
